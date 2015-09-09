@@ -52,11 +52,12 @@ module.exports = function(source) {
         suffix = 'return T.render.apply(T, arguments); };';
     }
 
-    return 'var H = require("hogan.js");\n' +
+    var compile = 'var H = require("hogan.js");\n' +
            'module.exports = function() { ' +
            'var T = new H.Template(' +
            Hogan.compile(source, { asString: true }) +
            ', ' +
            JSON.stringify(source) +
            ', H);' + suffix;
+    return compile.replace(/t\.[fd]\(\"_\(([^\"]+)\)\"[^\)]+\)/gi, 'gettext($1)');
 };
