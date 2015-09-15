@@ -66,11 +66,11 @@ module.exports = function(source) {
     var vdata = source.replace(/\{\{(.+?)\}\}/gi, function(full, matched, pos, string) {
         var repl, comp, cOption, cId, cName;
         repl = (matched.indexOf('_(')<0)?false:"{{ ___"+pos+"___ }}";
-        comp = !(repl || matched.indexOf('$(')<0);
+        comp = !(repl || matched.indexOf('#(')<0);
         if (repl) {
             strings[pos] = matched;
         } else if (comp) {
-            var cOption = matched.match(/\$\((\w+)\=(.+?)\)/);
+            var cOption = matched.match(/\#\((\w+)\=(.+?)\)/);
             try {
                 cName = cOption[1];
                 cOption = JSON.parse(cOption[2]) || {};
