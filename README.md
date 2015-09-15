@@ -11,7 +11,7 @@ Compiles [Mustache](https://mustache.github.io/) templates with [Hogan](https://
 ### Install
 
 ```sh
-$ npm i -S mustache-loader
+$ npm i -S exthogan-loader
 ```
 
 ### Usage
@@ -20,10 +20,10 @@ $ npm i -S mustache-loader
 module: {
     loaders: [ {
         test: /\.html$/,
-        loader: 'mustache'
-        // loader: 'mustache?minify'
-        // loader: 'mustache?{ minify: { removeComments: false } }'
-        // loader: 'mustache?noShortcut'
+        loader: 'exthogan'
+        // loader: 'exthogan?minify'
+        // loader: 'exthogan?{ minify: { removeComments: false } }'
+        // loader: 'exthogan?noShortcut'
     } ]
 }
 ```

@@ -1,42 +1,42 @@
 {
-  "name": "mustache-loader",
-  "version": "0.3.0",
-  "description": "Mustache loader for webpack",
-  "keywords": [
-    "webpack",
-    "loader",
-    "mustache",
-    "hogan"
-  ],
-  "homepage": "https://github.com/deepsweet/mustache-loader",
-  "author": {
-    "name": "Kir Belevich",
-    "email": "kir@soulshine.in",
-    "url": "https://github.com/deepsweet"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/deepsweet/mustache-loader.git"
-  },
-  "main": "index.js",
-  "peerDependencies": {
-    "hogan.js": "^3.0.2",
-    "webpack": "^1.4.3",
-    "loader-utils": "^0.2.4"
-  },
-  "dependencies": {
-    "hogan.js": "^3.0.2",
-    "html-minifier": "^0.6.8"
-  },
-  "devDependencies": {
-    "eslint": "^0.8.1",
-    "jscs": "^1.6.2"
-  },
-  "scripts": {
-    "test": "eslint index.js && jscs index.js"
-  },
-  "engines": {
-    "node": ">=0.10.0"
-  },
-  "license": "WTFPL"
+    "name": "exthogan-loader",
+    "version": "0.0.1",
+    "description": "Extended hogan loader for webpack",
+    "keywords": [
+        "webpack",
+        "loader",
+        "mustache",
+        "hogan"
+    ],
+    "homepage": "https://github.com/alexkorolev/exthogan-loader",
+    "author": {
+        "name": "Aleksandr Korolev",
+        "email": "mail@alesan.ru",
+        "url": "https://github.com/alexkorolev"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/alexkorolev/exthogan-loader.git"
+    },
+    "main": "index.js",
+    "peerDependencies": {
+        "hogan.js": "^3.0.2",
+        "webpack": "^1.4.3",
+        "loader-utils": "^0.2.4"
+    },
+    "dependencies": {
+        "hogan.js": "^3.0.2",
+        "html-minifier": "^0.6.8"
+    },
+    "devDependencies": {
+        "eslint": "^0.8.1",
+        "jscs": "^1.6.2"
+    },
+    "scripts": {
+        "test": "eslint index.js && jscs index.js"
+    },
+    "engines": {
+        "node": ">=0.10.0"
+    },
+    "license": "MIT"
 }
