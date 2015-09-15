@@ -64,7 +64,7 @@ module.exports = function(source) {
     }
     var strings = {};
     var vdata = source.replace(/\{\{(.+?)\}\}/gi, function(full, matched, pos, string) {
-        var repl, comp, cOption, cId, cName;
+        var repl, comp, cOption, cId, cName, uId;
         repl = (matched.indexOf('_(')<0)?false:"{{ ___"+pos+"___ }}";
         comp = !(repl || matched.indexOf('#(')<0);
         if (repl) {
@@ -77,14 +77,19 @@ module.exports = function(source) {
             } catch(e) {
                 cOption = {};
             }
-            cId = cOption.id || hashKey();
-            comp = '<span id="js-view-components-avatar-' + cId + '" class="js-view-components-avatar" data-component-id="' + cId + '"></span>' +
-                   '<script type="text/javascript">' +
-                        '(function(window) {' +
-                            'window.components.initComponent("'+cName+'", "' + cId + '", ' + JSON.stringify(cOption) + ');' +
-                            //'alert("' + cId + ' - ' + cName + '");' +
-                        '})(window)' +
-                   '</script>';
+            if (cName) {
+                cId = cOption.id;
+                uId = hashKey();
+                comp = '<span id="js-view-components-' + cName + '-' + uId + '" class="js-view-components-' + cName + '" data-component-id="' + cId + '"></span>' +
+                       '<script type="text/javascript">' +
+                            '(function(window) {' +
+                                'window.components.initComponent("'+cName+'", "' + uId + '", ' + JSON.stringify(cOption) + ');' +
+                                //'alert("' + cId + ' - ' + cName + '");' +
+                            '})(window)' +
+                       '</script>';
+            } else {
+                throw new Error('Component parse error \\' + matched + '\\');
+            }
         }
         return repl || comp || full;
     });
