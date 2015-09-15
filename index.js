@@ -23,6 +23,16 @@ var extend = function(target, source) {
 
     return target;
 };
+hashKey = function() {
+    "use strict";
+    var d = new Date().getTime(),
+        code = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = (d + Math.random() * 16) % 16 | 0;
+            d = Math.floor(d / 16);
+            return (c === 'x' ? r : (r & 0x7 | 0x8)).toString(16);
+        });
+    return code;
+}
 
 module.exports = function(source) {
     'use strict';
@@ -52,15 +62,31 @@ module.exports = function(source) {
     } else {
         suffix = 'return T.render.apply(T, arguments); };';
     }
-    var replaced = {};
+    var strings = {};
     var vdata = source.replace(/\{\{(.+?)\}\}/gi, function(full, matched, pos, string) {
-        var repl;
-        repl = (matched.indexOf('_(')<0)?false:"{{ $$$"+pos+"$$$ }}";
+        var repl, comp, cOption, cId, cName;
+        repl = (matched.indexOf('_(')<0)?false:"{{ ___"+pos+"___ }}";
+        comp = !(repl || matched.indexOf('$(')<0);
         if (repl) {
-            //console.log(repl);
-            replaced[pos] = matched;
+            strings[pos] = matched;
+        } else if (comp) {
+            var cOption = matched.match(/\$\((\w+)\=(.+?)\)/);
+            try {
+                cName = cOption[1];
+                cOption = JSON.parse(cOption[2]) || {};
+            } catch(e) {
+                cOption = {};
+            }
+            cId = cOption.id || hashKey();
+            comp = '<span id="js-view-components-avatar-' + cId + '" class="js-view-components-avatar" data-component-id="' + cId + '"></span>' +
+                   '<script type="text/javascript">' +
+                        '(function(window) {' +
+                            'window.components.initComponent("'+cName+'", "' + cId + '", ' + JSON.stringify(cOption) + ');' +
+                            //'alert("' + cId + ' - ' + cName + '");' +
+                        '})(window)' +
+                   '</script>';
         }
-        return repl || full;
+        return repl || comp || full;
     });
     var compile = 'var H = require("hogan.js");\n' +
            'module.exports = function() { ' +
@@ -69,9 +95,9 @@ module.exports = function(source) {
            ', ' +
            JSON.stringify(vdata) +
            ', H);' + suffix;
-    var compile = compile.replace(/t\.f\(\"\$\$\$(\d+)\$\$\$\"\,c\,p\,0\)/gi, function(full, matched, pos, string) {
+    var compile = compile.replace(/t\.f\(\"___(\d+)___\"\,c\,p\,0\)/gi, function(full, matched, pos, string) {
         'use strict';
-        var source = replaced[matched];
+        var source = strings[matched];
         var percentPos = source.indexOf(' % ');
         var str = percentPos<0?source:source.substring(0,percentPos);
         str = str.replace(/\|\w+$/gi, '');
