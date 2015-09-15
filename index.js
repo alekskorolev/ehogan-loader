@@ -64,7 +64,7 @@ module.exports = function(source) {
     }
     var strings = {};
     var vdata = source.replace(/\{\{(.+?)\}\}/gi, function(full, matched, pos, string) {
-        var repl, comp, cOption, cId, cName, uId;
+        var repl, comp, cOption, cId, cName, uId, rOptions;
         repl = (matched.indexOf('_(')<0)?false:"{{ ___"+pos+"___ }}";
         comp = !(repl || matched.indexOf('#(')<0);
         if (repl) {
@@ -79,11 +79,13 @@ module.exports = function(source) {
             }
             if (cName) {
                 cId = cOption.id;
+                rOptions = cOption.renderOptions.replace('%{', '{{').replace('}%', '}}');
+                cOption.renderOptions = undefined;
                 uId = hashKey();
                 comp = '<span id="js-view-components-' + cName + '-' + uId + '" class="js-view-components-' + cName + '" data-component-id="' + cId + '"></span>' +
                        '<script type="text/javascript">' +
                             '(function(window) {' +
-                                'window.components.initComponent("'+cName+'", "' + uId + '", ' + JSON.stringify(cOption) + ');' +
+                                'window.components.initComponent("'+cName+'", "' + uId + '", ' + rOptions + ', ' + JSON.stringify(cOption) + ');' +
                                 //'alert("' + cId + ' - ' + cName + '");' +
                             '})(window)' +
                        '</script>';
