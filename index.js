@@ -63,6 +63,9 @@ module.exports = function(source) {
         suffix = 'return T.render.apply(T, arguments); };';
     }
     var strings = {};
+    // for components
+    /*"<span><jsc-password-reset-block password_reset="{{ password_reset }}">content</jsc-password-reset-block></span>"
+        .match(/\<jsc-([^ ]+) ?(.*?)\>(.*?)\<\/jsc.+?\>/)*/
     var vdata = source.replace(/\{\{(.+?)\}\}/gi, function(full, matched, pos, string) {
         var repl, comp, cOption, cId, cName, uId, rOptions, cIdData;
         repl = (matched.indexOf('_(')<0)?false:"{{ ___"+pos+"___ }}";
