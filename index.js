@@ -64,25 +64,34 @@ module.exports = function(source) {
     }
     var strings = {};
     var vdata = source.replace(/\{\{(.+?)\}\}/gi, function(full, matched, pos, string) {
-        var repl, comp, cOption, cId, cName, uId, rOptions;
+        var repl, comp, cOption, cId, cName, uId, rOptions, cIdData;
         repl = (matched.indexOf('_(')<0)?false:"{{ ___"+pos+"___ }}";
         comp = !(repl || matched.indexOf('#(')<0);
         if (repl) {
             strings[pos] = matched;
         } else if (comp) {
-            var cOption = matched.match(/\#\((\w+)\=(.+?)\)/);
+            var cOption = matched.indexOf('=')>0?matched.match(/\#\((\w+)\=(.+?)\)/):matched.match(/\#\((\w+)/);
             try {
                 cName = cOption[1];
+                //console.log(cOption);
                 cOption = JSON.parse(cOption[2]) || {};
             } catch(e) {
+                //console.log(e)
                 cOption = {};
             }
             if (cName) {
                 cId = cOption.id;
-                rOptions = cOption.renderOptions.replace('%{', '{{').replace('}%', '}}');
+                if (cOption.renderOptions) {
+                    rOptions = JSON.stringify(cOption.renderOptions).replace('%{', '{{');
+                    rOptions = rOptions.replace('}%', '}}');
+                    rOptions = rOptions.replace('-(', '_(');
+                    rOptions = rOptions.replace('"*{', 'gettext("');
+                    rOptions = rOptions.replace('}*"', '")');
+                }
                 cOption.renderOptions = undefined;
                 uId = hashKey();
-                comp = '<span id="js-view-components-' + cName + '-' + uId + '" class="js-view-components-' + cName + '" data-component-id="' + cId + '"></span>' +
+                cIdData =  cId?' data-component-id="' + cId  + '"':'';
+                comp = '<span id="js-view-components-' + cName + '-' + uId + '" class="js-view-components-' + cName + '"' + cIdData + '></span>' +
                        '<script type="text/javascript">' +
                             '(function(window) {' +
                                 'window.components.initComponent("'+cName+'", "' + uId + '", ' + rOptions + ', ' + JSON.stringify(cOption) + ');' +
