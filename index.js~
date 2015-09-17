@@ -91,10 +91,43 @@ module.exports = function(source) {
     var vdata = source.replace(/\{\{(.+?)\}\}/gi, function(full, matched, pos, string) {
         var repl, comp, cOption, cId, cName, uId, rOptions, cIdData;
         repl = (matched.indexOf('_(')<0)?false:"{{ ___"+pos+"___ }}";
+        comp = false;//!(repl || matched.indexOf('#(')<0);
         if (repl) {
             strings[pos] = matched;
-        } 
-        return repl || full;
+        } else if (comp) {
+            var cOption = matched.indexOf('=')>0?matched.match(/\#\((\w+)\=(.+?)\)/):matched.match(/\#\((\w+)/);
+            try {
+                cName = cOption[1];
+                //console.log(cOption);
+                cOption = JSON.parse(cOption[2]) || {};
+            } catch(e) {
+                //console.log(e)
+                cOption = {};
+            }
+            if (cName) {
+                cId = cOption.id;
+                if (cOption.renderOptions) {
+                    rOptions = JSON.stringify(cOption.renderOptions).replace('%{', '{{');
+                    rOptions = rOptions.replace('}%', '}}');
+                    rOptions = rOptions.replace('-(', '_(');
+                    rOptions = rOptions.replace('"*{', 'gettext("');
+                    rOptions = rOptions.replace('}*"', '")');
+                }
+                cOption.renderOptions = undefined;
+                uId = hashKey();
+                cIdData =  cId?' data-component-id="' + cId  + '"':'';
+                comp = '<span id="js-view-components-' + cName + '-' + uId + '" class="js-view-components-' + cName + '"' + cIdData + '></span>' +
+                       '<script type="text/javascript">' +
+                            '(function(window) {' +
+                                'window.components.initComponent("'+cName+'", "' + uId + '", ' + rOptions + ', ' + JSON.stringify(cOption) + ');' +
+                                //'alert("' + cId + ' - ' + cName + '");' +
+                            '})(window)' +
+                       '</script>';
+            } else {
+                throw new Error('Component parse error \\' + matched + '\\');
+            }
+        }
+        return repl || comp || full;
     });
     var compile = 'var H = require("hogan.js");\n' +
            'module.exports = function() { ' +
