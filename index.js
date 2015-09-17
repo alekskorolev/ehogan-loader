@@ -23,7 +23,7 @@ var extend = function(target, source) {
 
     return target;
 };
-hashKey = function() {
+var hashKey = function() {
     "use strict";
     var d = new Date().getTime(),
         code = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -65,11 +65,33 @@ module.exports = function(source) {
     var strings = {};
     // for components
     /*"<span><jsc-password-reset-block password_reset="{{ password_reset }}">content</jsc-password-reset-block></span>"
-        .match(/\<jsc-([^ ]+) ?(.*?)\>(.*?)\<\/jsc.+?\>/)*/
+        .match()*/
+    source = source.replace(/\<jsc-([^ ]+) ?(.*?)\>(.*?)\<\/jsc.+?\>/gi, function(full, name, options, content) {
+        var opt = {}, component,
+            uId = 'jsc-' + name + '-' + hashKey(),
+            tagStart, initCode, tagEnd = '</span>',
+            scriptStart = '<script type="text/javascript">(function(window) {',
+            scriptEnd = '})(window)</script>';
+        options.replace(/(.+?)=\"(.+?)\"\s?/gi, function(full, name, value, pos) { 
+            if (opt[name]===undefined) {
+                if (opt[name] instanceof Array) {
+                    opt[name].push(value);
+                } else {
+                    opt[name] = [opt[name], value];
+                }
+            } else {
+                opt[name] = value;
+            } 
+        });
+        tagStart = '<span id="' + uId + '" class="jsc-"' + name + (opt.cid?'" data-component-cid="' + opt.cid:'') + '">';
+        initCode = 'window.components.initComponent(' + name + ', ' + uId + ', ' + JSON.stringify(opt) + (content?(', ' + content):'') + ')';
+        component = tagStart + (opt['with-content']?content:'') + tagEnd + scriptStart + initCode + scriptEnd;
+        return component;
+    });
     var vdata = source.replace(/\{\{(.+?)\}\}/gi, function(full, matched, pos, string) {
         var repl, comp, cOption, cId, cName, uId, rOptions, cIdData;
         repl = (matched.indexOf('_(')<0)?false:"{{ ___"+pos+"___ }}";
-        comp = !(repl || matched.indexOf('#(')<0);
+        comp = false;//!(repl || matched.indexOf('#(')<0);
         if (repl) {
             strings[pos] = matched;
         } else if (comp) {
