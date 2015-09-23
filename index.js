@@ -114,7 +114,8 @@ module.exports = function(source) {
         if (data) {
             data = data.replace(/\|\w+([\,\}])/gi, '$1');
             data = data.replace(/\: ([^\']+)([\,\}]) /gi, ': p.$1$2');
-            str = 'compile('+str+', '+data+')';
+            named = str.search(/\%\(.+?\)s/gi)>-1;
+            str = 'interpolate(' + str + ', ' + data + ', ' + named + ')';
         }
         return str;
     })
