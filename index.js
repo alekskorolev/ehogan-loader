@@ -84,7 +84,7 @@ module.exports = function(source) {
         });
 		content = content.replace(/\n/gi, '');
         tagStart = '<span id="jsc-' + name + uId + '{{ parent-uId }}{{ key }}" class="jsc-' + name + (opt.cid?'jsc-' + name + '-' + opt.cid:'') + '">';
-        initCode = 'window.components.initComponent("' + name + '", "' + uId + '{{ parent-uId }}{{ key }}", ' + JSON.stringify(opt) + (content?(', "' + content + '"'):'') + ')';
+        initCode = 'window.components.initComponent("' + name + '", "' + uId + '{{ parent-uId }}{{ key }}", "{{ parent-uId }}", ' + JSON.stringify(opt) + (content?(', "' + content + '"'):'') + ')';
         component = tagStart + (opt['with-content']?content:'') + tagEnd + scriptStart + initCode + scriptEnd;
         return component;
     });
