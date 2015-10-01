@@ -83,8 +83,8 @@ module.exports = function(source) {
             } 
         });
 		content = content.replace(/\n/gi, '');
-        tagStart = '<span id="jsc-' + name + uId + '{{ parent-uId }}{{ key }}" class="jsc-' + name + (opt.cid?'jsc-' + name + '-' + opt.cid:'') + '">';
-        initCode = 'window.components.initComponent("' + name + '", "' + uId + '{{ parent-uId }}{{ key }}", "{{ parent-uId }}", ' + JSON.stringify(opt) + (content?(', "' + content + '"'):'') + ')';
+        tagStart = '<span id="jsc-' + name + uId + '{{ parent-uId }}-' + opt.key + '" class="jsc-' + name + (opt.cid && !opt.key?' jsc-' + name + '-' + opt.cid:'') + (opt.key?' jsc-' + name + '-' + opt.key:'') + '">';
+        initCode = 'window.components.initComponent("' + name + '", "' + uId + '{{ parent-uId }}-' + opt.key + '", "{{ parent-uId }}", ' + JSON.stringify(opt) + (content?(', "' + content + '"'):'') + ')';
         component = tagStart + (opt['with-content']?content:'') + tagEnd + scriptStart + initCode + scriptEnd;
         return component;
     });
@@ -106,6 +106,7 @@ module.exports = function(source) {
     var compile = compile.replace(/t\.f\(\"___(\d+)___\"\,c\,p\,0\)/gi, function(full, matched, pos, string) {
         'use strict';
         var source = strings[matched];
+        var named;
         var percentPos = source.indexOf(' % ');
         var str = percentPos<0?source:source.substring(0,percentPos);
         str = str.replace(/\|\w+$/gi, '');
@@ -113,7 +114,7 @@ module.exports = function(source) {
         str = str.replace(/\_\(\'(.+)\'\)/gi, 'gettext("$1")');
         if (data) {
             data = data.replace(/\|\w+([\,\}])/gi, '$1');
-            data = data.replace(/\: ([^\']+)([\,\}]) /gi, ': p.$1$2');
+            data = data.replace(/\: ([^\']+)([\,\}]) /gi, ': t.d("$1",c,p,1)||""$2');
             named = str.search(/\%\(.+?\)s/gi)>-1;
             str = 'interpolate(' + str + ', ' + data + ', ' + named + ')';
         }
