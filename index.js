@@ -70,7 +70,7 @@ module.exports = function(source) {
             tagStart, initCode, tagEnd = '</span>',
             scriptStart = '<script type="text/javascript">(function(window) {',
             scriptEnd = '})(window)</script>';
-        options.replace(/(.+?)=\"(.+?)\"\s?/gi, function(full, name, value, pos) { 
+        options.replace(/(.+?)=\"(.+?)\"\s?/gi, function(full, name, value, pos) {
 	    	name=name.replace(/[\s]+/gi, '');
             if (opt.hasOwnProperty(name)) {
                 if (opt[name] instanceof Array) {
@@ -80,11 +80,11 @@ module.exports = function(source) {
                 }
             } else {
                 opt[name] = value;
-            } 
+            }
         });
 		content = content.replace(/\n/gi, '');
-        tagStart = '<span id="jsc-' + name + uId + '{{ parent-uId }}-' + opt.key + '" class="jsc-' + name + (opt.cid && !opt.key?' jsc-' + name + '-' + opt.cid:'') + (opt.key?' jsc-' + name + '-' + opt.key:'') + '">';
-        initCode = 'window.components.initComponent("' + name + '", "' + uId + '{{ parent-uId }}-' + opt.key + '", "{{ parent-uId }}", ' + JSON.stringify(opt) + (content?(', "' + content + '"'):'') + ')';
+        tagStart = '<span id="jsc-' + name + uId + '{{ parent-Id }}-' + ( opt.key || '') + '" class="jsc-' + name + (opt.cid && !opt.key?' jsc-' + name + '-' + opt.cid:'') + (opt.key?' jsc-' + name + '-' + opt.key:'') + '">';
+        initCode = 'snpcInit("-' + name + '", "' + uId + '{{ parent-Id }}-' + ( opt.key || '') + '", "{{ parent-uId }}", ' + JSON.stringify(opt) + (content?(", '" + content + "'"):'') + ')';
         component = tagStart + (opt['with-content']?content:'') + tagEnd + scriptStart + initCode + scriptEnd;
         return component;
     });
@@ -93,7 +93,7 @@ module.exports = function(source) {
         repl = (matched.indexOf('_(')<0)?false:"{{ ___"+pos+"___ }}";
         if (repl) {
             strings[pos] = matched;
-        } 
+        }
         return repl || full;
     });
     var compile = 'var H = require("hogan.js");\n' +
