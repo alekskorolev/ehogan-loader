@@ -1,6 +1,6 @@
 {
-    "name": "exthogan-loader",
-    "version": "0.0.1",
+    "name": "ehogan-loader",
+    "version": "0.0.2",
     "description": "Extended hogan loader for webpack",
     "keywords": [
         "webpack",
@@ -11,12 +11,12 @@
     "homepage": "https://github.com/alexkorolev/exthogan-loader",
     "author": {
         "name": "Aleksandr Korolev",
-        "email": "mail@alesan.ru",
+        "email": "alexandr@korolev.email",
         "url": "https://github.com/alexkorolev"
     },
     "repository": {
         "type": "git",
-        "url": "git://github.com/alexkorolev/exthogan-loader.git"
+        "url": "git://github.com/alexkorolev/ehogan-loader.git"
     },
     "main": "index.js",
     "peerDependencies": {
