@@ -60,7 +60,7 @@ module.exports = function(source) {
     if (query.noShortcut) {
         suffix = 'return T; }();';
     } else {
-        suffix = 'return T.render.apply(T, arguments); };';
+        suffix = 'return T[arguments[0] instanceof Array ? "ri" : "render"].apply(T, arguments); };';
     }
     var strings = {};
 	// осторожно, не для слабонервных
@@ -68,8 +68,8 @@ module.exports = function(source) {
         var opt = {}, component,
             uId = hashKey(),
             tagStart, initCode, tagEnd = '</span>',
-            scriptStart = '<script type="text/javascript">(function(window) {',
-            scriptEnd = '})(window)</script>';
+            scriptStart = '<script type="text/javascript">(function() {',
+            scriptEnd = '})()</script>';
         options.replace(/(.+?)=\"(.+?)\"\s?/gi, function(full, name, value, pos) {
 	    	name=name.replace(/[\s]+/gi, '');
             if (opt.hasOwnProperty(name)) {
@@ -84,7 +84,7 @@ module.exports = function(source) {
         });
 		content = content.replace(/\n/gi, '');
         tagStart = '<span id="jsc-' + name + uId + '{{ parent-Id }}-' + ( opt.key || '') + '" class="jsc-' + name + (opt.cid && !opt.key?' jsc-' + name + '-' + opt.cid:'') + (opt.key?' jsc-' + name + '-' + opt.key:'') + '">';
-        initCode = 'snpcInit("-' + name + '", "' + uId + '{{ parent-Id }}-' + ( opt.key || '') + '", "{{ parent-uId }}", ' + JSON.stringify(opt) + (content?(", '" + content + "'"):'') + ')';
+        initCode = 'jscInit("-' + name + '", "' + uId + '{{ parent-Id }}-' + ( opt.key || '') + '", "{{ parent-uId }}", ' + JSON.stringify(opt) + (content?(", '" + content + "'"):'') + ')';
         component = tagStart + (opt['with-content']?content:'') + tagEnd + scriptStart + initCode + scriptEnd;
         return component;
     });
