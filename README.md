@@ -1,17 +1,9 @@
-## Mustache loader for [webpack](https://webpack.github.io/)
-
-[![npm](http://img.shields.io/npm/v/mustache-loader.svg?style=flat-square)](https://www.npmjs.org/package/mustache-loader)
-[![travis](http://img.shields.io/travis/deepsweet/mustache-loader.svg?style=flat-square)](https://travis-ci.org/deepsweet/mustache-loader)
-[![climate](http://img.shields.io/codeclimate/github/deepsweet/mustache-loader.svg?style=flat-square)](https://codeclimate.com/github/deepsweet/mustache-loader/code)
-[![peer deps](http://img.shields.io/david/peer/deepsweet/mustache-loader.svg?style=flat-square)](https://david-dm.org/deepsweet/mustache-loader#info=peerDependencies)
-[![gratipay](http://img.shields.io/gratipay/deepsweet.svg?style=flat-square)](https://gratipay.com/deepsweet/)
-
-Compiles [Mustache](https://mustache.github.io/) templates with [Hogan](https://twitter.github.io/hogan.js/) and optionally [html-minifier](https://github.com/kangax/html-minifier).
+## Hogan loader for [webpack](https://webpack.github.io/)
 
 ### Install
 
 ```sh
-$ npm i -S exthogan-loader
+$ npm i -S ehogan-loader
 ```
 
 ### Usage
@@ -20,10 +12,10 @@ $ npm i -S exthogan-loader
 module: {
     loaders: [ {
         test: /\.html$/,
-        loader: 'exthogan'
-        // loader: 'exthogan?minify'
-        // loader: 'exthogan?{ minify: { removeComments: false } }'
-        // loader: 'exthogan?noShortcut'
+        loader: 'ehogan'
+        // loader: 'ehogan?minify'
+        // loader: 'ehogan?{ minify: { removeComments: false } }'
+        // loader: 'ehogan?noShortcut'
     } ]
 }
 ```
@@ -44,5 +36,35 @@ var html = template.render({ foo: 'bar' }, {partial: template2});
 
 [Documentation: Using loaders](https://webpack.github.io/docs/using-loaders.html).
 
+### Extended api
+
+Localization api with sintax converted as gettext format and python like string interpolation support. 
+
+```html
+{{ _('%(string)s for translate') % {'variable': 'String'} }}
+```
+** need enabled library, released gettext & interpolate function, like as [muce.io](https://github.com/alekskorolev/muce.io).
+
 ### License
-[WTFPL](http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-strip.jpg)
+
+The MIT License (MIT)
+
+Copyright (c) 2016 Aleksandr korolev <aleksandr@korolev.email>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

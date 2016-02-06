@@ -1,6 +1,6 @@
 {
     "name": "ehogan-loader",
-    "version": "0.0.2",
+    "version": "0.1.0",
     "description": "Extended hogan loader for webpack",
     "keywords": [
         "webpack",
@@ -8,7 +8,7 @@
         "mustache",
         "hogan"
     ],
-    "homepage": "https://github.com/alexkorolev/exthogan-loader",
+    "homepage": "https://github.com/alexkorolev/ehogan-loader",
     "author": {
         "name": "Aleksandr Korolev",
         "email": "alexandr@korolev.email",
