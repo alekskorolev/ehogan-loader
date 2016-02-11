@@ -1,0 +1,122 @@
+env:
+    es6: true
+ecmaFeatures:
+    modules: true
+rules:
+    quotes:
+        - 1
+        - "single"
+    comma-dangle:
+        - 1
+        - "never"
+    no-cond-assign:
+        - 1
+    no-constant-condition:
+        - 1
+    no-debugger:
+        - 2
+    no-dupe-args:
+        - 1
+    no-dupe-keys:
+        - 1
+    no-duplicate-case:
+        - 1 
+    no-empty:
+        - 1
+    no-ex-assign:
+        - 1
+    no-extra-boolean-cast:
+        - 1
+    no-extra-parens:
+        - 1
+    no-extra-semi:
+        - 1
+    no-func-assign:
+        - 1
+    no-inner-declarations:
+        - 1
+    no-invalid-regexp:
+        - 1
+    no-negated-in-lhs:
+        - 1
+    no-obj-calls:
+        - 1
+    no-regex-spaces:
+        - 1
+    no-sparse-arrays:
+        - 1
+    no-unreachable:
+        - 1
+    use-isnan:
+        - 1
+    valid-typeof:
+        - 1
+    no-unexpected-multiline:
+        - 1
+    block-scoped-var:
+        - 1
+    complexity:
+        - 1
+    consistent-return:
+        - 1
+    curly:
+        - 1
+    dot-location:
+        - 1
+        - "property"
+    eqeqeq:
+        - 1
+    no-alert:
+        - 1
+    no-extend-native:
+        - 1
+    no-redeclare:
+        - 1
+    no-return-assign:
+        - 1
+    no-sequences:
+        - 1
+    no-throw-literal:
+        - 1
+    no-useless-call:
+        - 1
+    vars-on-top:
+        - 1
+    yoda:
+        - 1
+    no-unused-vars:
+        - 1
+    no-use-before-define:
+        - 1
+    array-bracket-spacing:
+        - 1
+        - "never"
+    block-spacing:
+        - 1
+        - "never"
+    brace-style:
+        - 1
+    camelcase:
+        - 1
+    no-proto:
+        - 1
+    no-native-reassign:
+        - 1
+    no-new-func:
+        - 1
+    no-new-wrappers:
+        - 1
+    no-new:
+        - 1
+    no-implicit-coercion:
+        - 1
+    no-invalid-regexp:
+        - 1
+    newline-after-var:
+        - 1
+        - "always"
+    one-var:
+        - 1
+        - always
+    sort-vars:
+        - 1
