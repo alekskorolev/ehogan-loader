@@ -34,6 +34,9 @@ var hashKey = function() {
     return code;
 }
 
+var gtIncluded = false,
+    jscIncluded = false;
+
 module.exports = function(source) {
     'use strict';
     var query = loaderUtils.parseQuery(this.query);
@@ -97,6 +100,8 @@ module.exports = function(source) {
         return repl || full;
     });
     var compile = 'var H = require("hogan.js");\n' +
+           'window.gettext || require("ehogan-loader/gt.js");\n' +
+           'window.jscAdd || require("ehogan-loader/jscmanager.js");\n' +
            'module.exports = function() { ' +
            'var T = new H.Template(' +
            Hogan.compile(vdata, { asString: true }) +

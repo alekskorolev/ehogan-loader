@@ -36,14 +36,56 @@ var html = template.render({ foo: 'bar' }, {partial: template2});
 
 [Documentation: Using loaders](https://webpack.github.io/docs/using-loaders.html).
 
-### Extended api
+### Extended render api
 
-Localization api with sintax converted as gettext format and python like string interpolation support. 
+Localization api with sintax converted as gettext format and python like string interpolation support.
 
 ```html
 {{ _('%(string)s for translate') % {'variable': 'String'} }}
 ```
-** need enabled library, released gettext & interpolate function, like as [muce.io](https://github.com/alekskorolev/muce.io).
+
+### Components support
+Your may use component tags like as
+```html
+<jsc-custom-component [attributed options]>[content]</jsc-custom-component>
+```
+Add your component in your project:
+```javascript
+var template = require('your/template.html');
+
+/* options = {
+    uId - component tag element uid
+    el - element css selector
+    parentId - id of parent component
+    manager - components manager
+    content - inner content of jsc tag
+    ... and other options setted as component tag attribute
+} */
+var Component = function(options) {
+    // this code executed as component rendered from page
+}
+Component.name = 'custom-component'
+
+window.jscAdd(Component);
+
+$('body').append(template(context));
+```
+
+Or with es6 sintax
+```javascript
+import $ from 'jquery';
+import jscAdd from 'ehogan-loader/jscmanager';
+import Template from 'your/template.html';
+
+class CustomComponent {
+    constructor(options) {
+        // this code executed as component rendered from page
+    }
+}
+
+jscAdd(Component);
+$('body').append(template(context));
+```
 
 ### License
 
