@@ -99,7 +99,7 @@ module.exports = function(source) {
         }
         return repl || full;
     });
-    var vdata = source.replace(/\{\{(.+?)\}\}/gi, function(full, matched, pos, string) {
+    var vdata = vdata.replace(/\{\{(.+?)\}\}/gi, function(full, matched, pos, string) {
         var repl, comp, cOption, cId, cName, uId, rOptions, cIdData;
         repl = (matched.indexOf('_(')<0)?false:"{{ ___"+pos+"___ }}";
         if (repl) {
