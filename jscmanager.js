@@ -46,7 +46,7 @@ Components.prototype.add = function(component) {
         this._CList[name] = component;
     } else if (component instanceof Array) {
         for (i = 0; i < component.length; i++){
-           name = this.parseName(component[i]);
+           name = parseName(component[i]);
            if (component[i] instanceof Function && name) {
                 this._CList[name] = component[i];
            }
