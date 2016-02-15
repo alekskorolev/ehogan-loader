@@ -91,6 +91,14 @@ module.exports = function(source) {
         component = tagStart + (opt['with-content']?content:'') + tagEnd + scriptStart + initCode + scriptEnd;
         return component;
     });
+    var vdata = source.replace(/\{\{\{(.+?)\}\}\}/gi, function(full, matched, pos, string) {
+        var repl, comp, cOption, cId, cName, uId, rOptions, cIdData;
+        repl = (matched.indexOf('_(')<0)?false:"{{{ ___"+pos+"___ }}}";
+        if (repl) {
+            strings[pos] = matched;
+        }
+        return repl || full;
+    });
     var vdata = source.replace(/\{\{(.+?)\}\}/gi, function(full, matched, pos, string) {
         var repl, comp, cOption, cId, cName, uId, rOptions, cIdData;
         repl = (matched.indexOf('_(')<0)?false:"{{ ___"+pos+"___ }}";
