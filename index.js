@@ -34,6 +34,9 @@ var hashKey = function() {
     return code;
 }
 
+var gtIncluded = false,
+    jscIncluded = false;
+
 module.exports = function(source) {
     'use strict';
     var query = loaderUtils.parseQuery(this.query);
@@ -63,7 +66,7 @@ module.exports = function(source) {
         suffix = 'return T[arguments[0] instanceof Array ? "ri" : "render"].apply(T, arguments); };';
     }
     var strings = {};
-	// осторожно, не для слабонервных
+    // осторожно, не для слабонервных
     source = source.replace(/\<jsc\-([^\s]+)[^\w]*([^\>]*?)\>([\s\S]*?)(?:\<\/jsc\-\1\>)/gi, function(full, name, options, content, ccontent) {
         var opt = {}, component,
             uId = hashKey(),
@@ -71,7 +74,7 @@ module.exports = function(source) {
             scriptStart = '<script type="text/javascript">(function() {',
             scriptEnd = '})()</script>';
         options.replace(/(.+?)=\"(.+?)\"\s?/gi, function(full, name, value, pos) {
-	    	name=name.replace(/[\s]+/gi, '');
+            name=name.replace(/[\s]+/gi, '');
             if (opt.hasOwnProperty(name)) {
                 if (opt[name] instanceof Array) {
                     opt[name].push(value);
@@ -82,13 +85,21 @@ module.exports = function(source) {
                 opt[name] = value;
             }
         });
-		content = content.replace(/\n/gi, '');
+        content = content.replace(/\n/gi, '');
         tagStart = '<span id="jsc-' + name + uId + '{{ parent-Id }}-' + ( opt.key || '') + '" class="jsc-' + name + (opt.cid && !opt.key?' jsc-' + name + '-' + opt.cid:'') + (opt.key?' jsc-' + name + '-' + opt.key:'') + '">';
         initCode = 'jscInit("-' + name + '", "' + uId + '{{ parent-Id }}-' + ( opt.key || '') + '", "{{ parent-uId }}", ' + JSON.stringify(opt) + (content?(", '" + content + "'"):'') + ')';
         component = tagStart + (opt['with-content']?content:'') + tagEnd + scriptStart + initCode + scriptEnd;
         return component;
     });
-    var vdata = source.replace(/\{\{(.+?)\}\}/gi, function(full, matched, pos, string) {
+    var vdata = source.replace(/\{\{\{(.+?)\}\}\}/gi, function(full, matched, pos, string) {
+        var repl, comp, cOption, cId, cName, uId, rOptions, cIdData;
+        repl = (matched.indexOf('_(')<0)?false:"{{{ ___"+pos+"___ }}}";
+        if (repl) {
+            strings[pos] = matched;
+        }
+        return repl || full;
+    });
+    var vdata = vdata.replace(/\{\{(.+?)\}\}/gi, function(full, matched, pos, string) {
         var repl, comp, cOption, cId, cName, uId, rOptions, cIdData;
         repl = (matched.indexOf('_(')<0)?false:"{{ ___"+pos+"___ }}";
         if (repl) {
@@ -97,6 +108,8 @@ module.exports = function(source) {
         return repl || full;
     });
     var compile = 'var H = require("hogan.js");\n' +
+           'window.gettext || require("ehogan-loader/gt.js");\n' +
+           'window.jscAdd || require("ehogan-loader/jscmanager.js");\n' +
            'module.exports = function() { ' +
            'var T = new H.Template(' +
            Hogan.compile(vdata, { asString: true }) +
