@@ -1,11 +1,11 @@
 var Components = function() {
     },
     parseName = function(component) {
-        if (component.name) {
-            return component.name.replace(/([A-Z])/g, $1 => "-" + $1.toLowerCase());
-        }
         if (component.prototype && component.prototype.name) {
             return '-' + component.prototype.name;
+        }
+        if (component.name) {
+            return component.name.replace(/([A-Z])/g, $1 => "-" + $1.toLowerCase());
         }
         return false;
     },
@@ -33,6 +33,7 @@ Components.prototype.init = function(name, id, parentId, options = {}, content =
     }
     options.el = elId;
     component = new Component(options);
+    component.jscName = name;
     this._cList[id] = component;
     this._cNamedList[name] = this._cNamedList[name] || [];
 
