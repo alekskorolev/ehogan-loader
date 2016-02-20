@@ -32,8 +32,8 @@ Components.prototype.init = function(name, id, parentId, options = {}, content =
         return false
     }
     options.el = elId;
+    options.name = name;
     component = new Component(options);
-    component.jscName = name;
     this._cList[id] = component;
     this._cNamedList[name] = this._cNamedList[name] || [];
 
