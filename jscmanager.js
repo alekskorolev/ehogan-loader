@@ -26,7 +26,7 @@ Components.prototype.init = function(name, id, parentId, options = {}, content =
     options.manager = this;
     // options.components is deprecated
     options.components = this;
-    options.content = content ? content.replace(/^\s+|\s+$/g, "") : undefined;
+    options.customContent = content ? content.replace(/^\s+|\s+$/g, "") : undefined;
 
     if (!Component) {
         return false
