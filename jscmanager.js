@@ -5,7 +5,7 @@ var Components = function() {
             return '-' + component.prototype.name;
         }
         if (component.name) {
-            return component.name.replace(/([A-Z])/g, $1 => "-" + $1.toLowerCase());
+            return component.name.replace(/([A-Z])/g, function ($1) { return "-" + $1.toLowerCase() });
         }
         return false;
     },
@@ -17,10 +17,12 @@ Components.prototype._CList = {};
 Components.prototype._cList = {};
 Components.prototype._cNamedList = {};
 
-Components.prototype.init = function(name, id, parentId, options = {}, content = false) {
+Components.prototype.init = function(name, id, parentId, options, content) {
     var Component = this._CList[name],
         elId = '#jsc' + name + id,
         component;
+
+    options = options || {};
     options.uId = options.uId || id;
     options.parentId = parentId;
     options.manager = this;
