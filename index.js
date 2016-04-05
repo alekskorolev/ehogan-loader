@@ -71,8 +71,8 @@ module.exports = function(source) {
         var opt = {}, component,
             uId = hashKey(),
             tagStart, initCode, tagEnd = '</span>',
-            scriptStart = '<script type="text/javascript">(function() {',
-            scriptEnd = '})()</script>';
+            scriptStart = '<script type="text/javascript">(function(window) {',
+            scriptEnd = '})(window)</script>';
         options.replace(/(.+?)=\"(.+?)\"\s?/gi, function(full, name, value, pos) {
             name=name.replace(/[\s]+/gi, '');
             if (opt.hasOwnProperty(name)) {
@@ -87,7 +87,7 @@ module.exports = function(source) {
         });
         content = content.replace(/\n/gi, '');
         tagStart = '<span id="jsc-' + name + uId + '{{ parent-Id }}-' + ( opt.key || '') + '" class="jsc-' + name + (opt.cid && !opt.key?' jsc-' + name + '-' + opt.cid:'') + (opt.key?' jsc-' + name + '-' + opt.key:'') + '">';
-        initCode = 'jscInit("-' + name + '", "' + uId + '{{ parent-Id }}-' + ( opt.key || '') + '", "{{ parent-uId }}", ' + JSON.stringify(opt) + (content?(", '" + content + "'"):'') + ')';
+        initCode = 'window.jscInit("-' + name + '", "' + uId + '{{ parent-Id }}-' + ( opt.key || '') + '", "{{ parent-uId }}", ' + JSON.stringify(opt) + (content?(", '" + content + "'"):'') + ')';
         component = tagStart + (opt['with-content']?content:'') + tagEnd + scriptStart + initCode + scriptEnd;
         return component;
     });
