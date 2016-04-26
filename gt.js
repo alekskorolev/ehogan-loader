@@ -25,16 +25,16 @@ function ngettext(singular, plural, count) {
 function gettext_noop(msgid) { return msgid; }
 
 function pgettext(context, msgid) {
-  var value = gettext(context + '' + msgid);
-  if (value.indexOf('') != -1) {
+  var value = gettext(context + ' ' + msgid);
+  if (value.indexOf(' ') != -1) {
     value = msgid;
   }
   return value;
 }
 
 function npgettext(context, singular, plural, count) {
-  var value = ngettext(context + '' + singular, context + '' + plural, count);
-  if (value.indexOf('') != -1) {
+  var value = ngettext(context + ' ' + singular, context + ' ' + plural, count);
+  if (value.indexOf(' ') != -1) {
     value = ngettext(singular, plural, count);
   }
   return value;
