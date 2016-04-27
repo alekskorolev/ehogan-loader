@@ -25,16 +25,16 @@ function ngettext(singular, plural, count) {
 function gettext_noop(msgid) { return msgid; }
 
 function pgettext(context, msgid) {
-  var value = gettext(context + '\x04' + msgid);
-  if (value.indexOf('\x04') != -1) {
+    var value = gettext(context + String.fromCharCode(4) + msgid);
+    if (value.indexOf(String.fromCharCode(4)) != -1) {
     value = msgid;
   }
   return value;
 }
 
 function npgettext(context, singular, plural, count) {
-  var value = ngettext(context + '\x04' + singular, context + '\x04' + plural, count);
-  if (value.indexOf('\x04') != -1) {
+    var value = ngettext(context + String.fromCharCode(4) + singular, context + String.fromCharCode(4) + plural, count);
+    if (value.indexOf(String.fromCharCode(4)) != -1) {
     value = ngettext(singular, plural, count);
   }
   return value;
