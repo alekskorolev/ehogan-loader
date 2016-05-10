@@ -15,7 +15,6 @@ var Components = function() {
 
 Components.prototype._CList = {};
 Components.prototype._cList = {};
-Components.prototype._cNamedList = {};
 
 Components.prototype.init = function(name, id, parentId, options, content) {
     var Component = this._CList[name],
@@ -35,9 +34,13 @@ Components.prototype.init = function(name, id, parentId, options, content) {
     }
     options.el = elId;
     options.name = name;
-    component = new Component(options);
-    this._cList[id] = component;
-    this._cNamedList[name] = this._cNamedList[name] || [];
+    if (this._cList[elId] && options.cacheble) {
+        component = this._cList[elId];
+        component.reInitialize(options);
+    } else {
+        component = new Component(options);
+    }
+    this._cList[elId] = component;
 
     return component;
 };
