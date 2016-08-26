@@ -60,7 +60,7 @@ Components.prototype.add = function(component) {
 if (!jscInit || !jscAdd) {
     components = new Components();
     jscInit = window.jscInit = function() {
-        components.init.apply(components, arguments);
+        return components.init.apply(components, arguments);
     }
     jscAdd = window.jscAdd = function() {
         components.add.apply(components, arguments);
