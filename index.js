@@ -74,7 +74,10 @@ module.exports = function(source) {
             scriptStart = '<script type="text/javascript">(function(window) {',
             scriptEnd = '})(window)</script>';
         options.replace(/(.+?)=\"(.+?)\"\s?/gi, function(full, name, value, pos) {
-            name=name.replace(/[\s]+/gi, '');
+            name = name.replace(/[\s]+/gi, '');
+            var camelCaseName = name.replace(/(\-.)/gi, function(full, chars) {
+                return chars[1].toUpperCase();
+            });
             if (opt.hasOwnProperty(name)) {
                 if (opt[name] instanceof Array) {
                     opt[name].push(value);
@@ -84,7 +87,17 @@ module.exports = function(source) {
             } else {
                 opt[name] = value;
             }
+            if (opt.hasOwnProperty(camelCaseName)) {
+                if (opt[camelCaseName] instanceof Array) {
+                    opt[camelCaseName].push(value);
+                } else {
+                    opt[camelCaseName] = [opt[camelCaseName], value];
+                }
+            } else {
+                opt[camelCaseName] = value;
+            }
         });
+
         content = content.replace(/\n/gi, '');
         tagStart = '<span id="jsc-' + name + uId + '{{ parent-Id }}-' + ( opt.key || '') + '" class="jsc-' + name + (opt.cid && !opt.key?' jsc-' + name + '-' + opt.cid:'') + (opt.key?' jsc-' + name + '-' + opt.key:'') + '">';
         initCode = 'window.jscInit("-' + name + '", "' + uId + '{{ parent-Id }}-' + ( opt.key || '') + '", "{{ parent-uId }}", ' + JSON.stringify(opt) + (content?(", '" + content + "'"):'') + ')';
