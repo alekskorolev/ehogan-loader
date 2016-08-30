@@ -87,14 +87,16 @@ module.exports = function(source) {
             } else {
                 opt[name] = value;
             }
-            if (opt.hasOwnProperty(camelCaseName)) {
-                if (opt[camelCaseName] instanceof Array) {
-                    opt[camelCaseName].push(value);
+            if (camelCaseName !==name) {
+                if (opt.hasOwnProperty(camelCaseName)) {
+                    if (opt[camelCaseName] instanceof Array) {
+                        opt[camelCaseName].push(value);
+                    } else {
+                        opt[camelCaseName] = [opt[camelCaseName], value];
+                    }
                 } else {
-                    opt[camelCaseName] = [opt[camelCaseName], value];
+                    opt[camelCaseName] = value;
                 }
-            } else {
-                opt[camelCaseName] = value;
             }
         });
 
