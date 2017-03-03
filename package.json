@@ -1,6 +1,6 @@
 {
     "name": "ehogan-loader",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "description": "Extended hogan loader for webpack",
     "keywords": [
         "webpack",
@@ -20,9 +20,6 @@
         "url": "git://github.com/alekskorolev/ehogan-loader.git"
     },
     "main": "index.js",
-    "peerDependencies": {
-        "webpack": "^1.11.0"
-    },
     "dependencies": {
         "hogan.js": "^3.0.2",
         "html-minifier": "^0.6.8"
