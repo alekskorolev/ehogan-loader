@@ -1,6 +1,6 @@
 {
     "name": "ehogan-loader",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "description": "Extended hogan loader for webpack",
     "keywords": [
         "webpack",
@@ -22,7 +22,8 @@
     "main": "index.js",
     "dependencies": {
         "hogan.js": "^3.0.2",
-        "html-minifier": "^0.6.8"
+        "html-minifier": "^0.6.8",
+        "loader-utils": "^0.2.16"
     },
     "devDependencies": {
         "eslint": "^0.8.1",
